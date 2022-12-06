@@ -1,0 +1,119 @@
+{
+	"info": {
+		"_postman_id": "d7c6f0b9-e84d-4cdc-a390-6017181e9de3",
+		"name": "server_test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get servers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:20082/servers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "20082",
+					"path": [
+						"servers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post server",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"server-name\": \"Minecraft-server\",\n  \"serverSpecs\": \"MID-TIER\",\n  \"fileLocation\": \"https://www.example.com/\",\n  \"whitelist\": [\n    {\n      \"users\": [\n        100,\n        200,\n        300\n      ]\n    },\n    {\n      \"users\": [\n        100,\n        200,\n        300\n      ]\n    }\n  ],\n  \"ownerId\": 100,\n  \"serverId\": 100,\n  \"status\": \"RUNNING\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:20082/servers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "20082",
+					"path": [
+						"servers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Start server",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:20082/servers/100/start",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "20082",
+					"path": [
+						"servers",
+						"100",
+						"start"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get server's whitelist",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:20082/servers/300/whitelist",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "20082",
+					"path": [
+						"servers",
+						"300",
+						"whitelist"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

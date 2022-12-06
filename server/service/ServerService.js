@@ -1,5 +1,36 @@
 'use strict';
 
+const servers= [ {
+  "server-name" : "Minecraft-server",
+  "serverSpecs" : "MID-TIER",
+  "fileLocation" : "https://www.example.com/",
+  "whitelist" : {
+    "users" : [100, 200, 300]
+  },
+  "ownerId" : 100,
+  "serverId" : 100,
+  "status" : "RUNNING"
+}, {
+  "server-name" : "Ark-server",
+  "serverSpecs" : "HIGH-TIER",
+  "fileLocation" : "https://www.example.com/",
+  "whitelist" : {
+    "users" : [100, 200]
+  },
+  "ownerId" : 100,
+  "serverId" : 200,
+  "status" : "RUNNING"
+}, {
+  "server-name" : "Outward-server",
+  "serverSpecs" : "MID-TIER",
+  "fileLocation" : "https://www.example.com/",
+  "whitelist" : {
+    "users" : [200]
+  },
+  "ownerId" : 200,
+  "serverId" : 300,
+  "status" : "RUNNING"
+} ];
 
 /**
  * Returns all the servers that are created.
@@ -10,35 +41,13 @@
 exports.serversGET = function() {
   return new Promise(function(resolve, reject) {
     var examples = {};
-    examples['application/json'] = [ {
-  "server-name" : "Minecraft-server",
-  "serverSpecs" : "MID-TIER",
-  "fileLocation" : "https://www.example.com/",
-  "whitelist" : [ {
-    "users" : [ 100, 200, 300 ]
-  }, {
-    "users" : [ 100, 200, 300 ]
-  } ],
-  "ownerId" : 100,
-  "serverId" : 100,
-  "status" : "RUNNING"
-}, {
-  "server-name" : "Minecraft-server",
-  "serverSpecs" : "MID-TIER",
-  "fileLocation" : "https://www.example.com/",
-  "whitelist" : [ {
-    "users" : [ 100, 200, 300 ]
-  }, {
-    "users" : [ 100, 200, 300 ]
-  } ],
-  "ownerId" : 100,
-  "serverId" : 100,
-  "status" : "RUNNING"
-} ];
-    if (Object.keys(examples).length > 0) {
+    
+    if (servers && servers.length > 0) {
+      examples['application/json'] = servers;
       resolve(examples[Object.keys(examples)[0]]);
     } else {
-      resolve();
+      examples['text/plain'] = 'Something went wrong.';
+      reject(examples[Object.keys(examples)[0]]);
     }
   });
 }
@@ -54,11 +63,13 @@ exports.serversGET = function() {
 exports.serversPOST = function(body) {
   return new Promise(function(resolve, reject) {
     var examples = {};
-    examples['application/json'] = "Server created successfully.";
-    if (Object.keys(examples).length > 0) {
+    if (body) {
+      examples['text/plain'] = "Server created successfully.";
+
       resolve(examples[Object.keys(examples)[0]]);
     } else {
-      resolve();
+      examples['text/plain'] = 'Invalid parameters.';
+      reject(examples[Object.keys(examples)[0]]);
     }
   });
 }
@@ -74,11 +85,13 @@ exports.serversPOST = function(body) {
 exports.serversServerIdDELETE = function(serverId) {
   return new Promise(function(resolve, reject) {
     var examples = {};
-    examples['application/json'] = "Server deleted.";
-    if (Object.keys(examples).length > 0) {
+
+    if (servers.some(server => server.serverId === serverId)) {
+      examples['text/plain'] = "Server deleted.";
       resolve(examples[Object.keys(examples)[0]]);
     } else {
-      resolve();
+      examples['text/plain'] = "Server not found.";
+      reject(examples[Object.keys(examples)[0]]);    
     }
   });
 }
@@ -94,23 +107,13 @@ exports.serversServerIdDELETE = function(serverId) {
 exports.serversServerIdGET = function(serverId) {
   return new Promise(function(resolve, reject) {
     var examples = {};
-    examples['application/json'] = {
-  "server-name" : "Minecraft-server",
-  "serverSpecs" : "MID-TIER",
-  "fileLocation" : "https://www.example.com/",
-  "whitelist" : [ {
-    "users" : [ 100, 200, 300 ]
-  }, {
-    "users" : [ 100, 200, 300 ]
-  } ],
-  "ownerId" : 100,
-  "serverId" : 100,
-  "status" : "RUNNING"
-};
-    if (Object.keys(examples).length > 0) {
+    const server = servers.find(server => server.serverId === serverId);
+    if (server) {
+      examples['application/json'] = server;
       resolve(examples[Object.keys(examples)[0]]);
     } else {
-      resolve();
+      examples['text/plain'] = "Server not found.";
+      reject(examples[Object.keys(examples)[0]]);    
     }
   });
 }
@@ -127,11 +130,13 @@ exports.serversServerIdGET = function(serverId) {
 exports.serversServerIdPUT = function(body,serverId) {
   return new Promise(function(resolve, reject) {
     var examples = {};
-    examples['application/json'] = "Server modified successfully.";
-    if (Object.keys(examples).length > 0) {
+
+    if (servers.some(server => server.serverId === serverId)) {
+      examples['text/plain'] = "Server modified successfully.";
       resolve(examples[Object.keys(examples)[0]]);
     } else {
-      resolve();
+      examples['text/plain'] = "Server not found.";
+      reject(examples[Object.keys(examples)[0]]);    
     }
   });
 }
@@ -147,11 +152,13 @@ exports.serversServerIdPUT = function(body,serverId) {
 exports.serversServerIdStartPUT = function(serverId) {
   return new Promise(function(resolve, reject) {
     var examples = {};
-    examples['application/json'] = "Server started up successfully.";
-    if (Object.keys(examples).length > 0) {
+
+    if (servers.some(server => server.serverId === serverId)) {
+      examples['text/plain'] = "Server started up successfully.";
       resolve(examples[Object.keys(examples)[0]]);
     } else {
-      resolve();
+      examples['text/plain'] = "Server not found.";
+      reject(examples[Object.keys(examples)[0]]);    
     }
   });
 }
@@ -167,11 +174,13 @@ exports.serversServerIdStartPUT = function(serverId) {
 exports.serversServerIdStopPUT = function(serverId) {
   return new Promise(function(resolve, reject) {
     var examples = {};
-    examples['application/json'] = "Server stopped successfully.";
-    if (Object.keys(examples).length > 0) {
+
+    if (servers.some(server => server.serverId === serverId)) {
+      examples['text/plain'] = "Server stopped successfully.";
       resolve(examples[Object.keys(examples)[0]]);
     } else {
-      resolve();
+      examples['text/plain'] = "Server not found.";
+      reject(examples[Object.keys(examples)[0]]);    
     }
   });
 }

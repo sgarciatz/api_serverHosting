@@ -1,0 +1,463 @@
+openapi: 3.0.0
+info:
+  title: ServerHosting API
+  description: "Optional multiline or single-line description in [CommonMark](http://commonmark.org/help/)\
+    \ or HTML."
+  version: 1.0.0
+servers:
+- url: /
+paths:
+  /servers:
+    get:
+      tags:
+      - server
+      summary: Returns all the servers that are created.
+      description: Returns all the servers that are created.
+      operationId: serversGET
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Server'
+                x-content-type: application/json
+        "500":
+          description: Internal Server Error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Something went wrong.
+                x-content-type: text/plain
+      x-swagger-router-controller: Server
+    post:
+      tags:
+      - server
+      summary: Create and inserts a new server in the cloud database.
+      description: Create and inserts a new server in the cloud database.
+      operationId: serversPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Server'
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Server created successfully.
+                x-content-type: text/plain
+        "400":
+          description: Bad request
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Invalid parameters.
+                x-content-type: text/plain
+      x-swagger-router-controller: Server
+  /servers/{serverId}:
+    get:
+      tags:
+      - server
+      summary: Returns a server specified by its ID.
+      description: Returns a server specified by its ID.
+      operationId: serversServerIdGET
+      parameters:
+      - name: serverId
+        in: path
+        description: Identifier of a server
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          example: 100
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Server'
+        "404":
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Server not found.
+                x-content-type: text/plain
+      x-swagger-router-controller: Server
+    put:
+      tags:
+      - server
+      summary: Update characteristic of the server specified by its identifier.
+      description: Update characteristic of the server specified by its identifier.
+      operationId: serversServerIdPUT
+      parameters:
+      - name: serverId
+        in: path
+        description: Identifier of a server
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+          example: 100
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Server'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Server modified successfully.
+                x-content-type: text/plain
+        "400":
+          description: Bad request
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Invalid parameters.
+                x-content-type: text/plain
+        "404":
+          description: Not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Server not found.
+                x-content-type: text/plain
+      x-swagger-router-controller: Server
+    delete:
+      tags:
+      - server
+      summary: Delete a server given its ID.
+      description: Delete a server given its ID.
+      operationId: serversServerIdDELETE
+      parameters:
+      - name: serverId
+        in: path
+        description: Identifier of a server.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+          example: 100
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Server deleted.
+                x-content-type: text/plain
+        "401":
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Unauthorized action.
+                x-content-type: text/plain
+        "404":
+          description: Not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Server not found.
+                x-content-type: text/plain
+      x-swagger-router-controller: Server
+  /servers/{serverId}/start:
+    put:
+      tags:
+      - server
+      summary: Starts up the server specified by its identifier.
+      description: Starts up the server specified by its identifier.
+      operationId: serversServerIdStartPUT
+      parameters:
+      - name: serverId
+        in: path
+        description: Identifier of a server.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+          example: 100
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Server started up successfully.
+                x-content-type: text/plain
+        "401":
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Unauthorized action.
+                x-content-type: text/plain
+        "404":
+          description: Not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Server not found.
+                x-content-type: text/plain
+      x-swagger-router-controller: Server
+  /servers/{serverId}/stop:
+    put:
+      tags:
+      - server
+      summary: Stops a running server server.
+      description: Stops a running server server.
+      operationId: serversServerIdStopPUT
+      parameters:
+      - name: serverId
+        in: path
+        description: Identifier of a server.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+          example: 100
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Server stopped successfully.
+                x-content-type: text/plain
+        "401":
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Unauthorized action.
+                x-content-type: text/plain
+        "404":
+          description: Not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Server not found.
+                x-content-type: text/plain
+      x-swagger-router-controller: Server
+  /servers/{serverId}/whitelist:
+    get:
+      tags:
+      - whitelist
+      summary: Retrieves the whitelist of the server given its ID.
+      description: Retrieves the whitelist of the server given its ID.
+      operationId: serversServerIdWhitelistGET
+      parameters:
+      - name: serverId
+        in: path
+        description: Identifier of a server.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          example: 100
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Whitelist'
+        "404":
+          description: Not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Server not found.
+                x-content-type: text/plain
+      x-swagger-router-controller: Whitelist
+    put:
+      tags:
+      - whitelist
+      summary: Modify the server's whitelist (add users or remove users).
+      description: Modify the server's whitelist (add users or remove users).
+      operationId: serversServerIdWhitelistPUT
+      parameters:
+      - name: serverId
+        in: path
+        description: Identifier of a server.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          example: 100
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Whitelist'
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Server's whitelist modified.
+                x-content-type: text/plain
+        "400":
+          description: Bad request
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Invalid whilelist.
+                x-content-type: text/plain
+        "404":
+          description: Not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Server not found.
+                x-content-type: text/plain
+      x-swagger-router-controller: Whitelist
+    delete:
+      tags:
+      - whitelist
+      summary: Empties the server's whitelist.
+      description: Empties the server's whitelist.
+      operationId: serversServerIdWhitelistDELETE
+      parameters:
+      - name: serverId
+        in: path
+        description: Identifier of a server.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          example: 100
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Server's whitelist emptied.
+                x-content-type: text/plain
+        "401":
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Unauthorized action.
+                x-content-type: text/plain
+        "404":
+          description: Not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Server not found.
+                x-content-type: text/plain
+      x-swagger-router-controller: Whitelist
+components:
+  schemas:
+    Server:
+      type: object
+      properties:
+        serverId:
+          type: integer
+          example: 100
+        ownerId:
+          type: integer
+          example: 100
+        server-name:
+          type: string
+          example: Minecraft-server
+        serverSpecs:
+          type: string
+          example: MID-TIER
+        fileLocation:
+          type: string
+          example: https://www.example.com/
+        status:
+          type: string
+          example: RUNNING
+        whitelist:
+          type: array
+          items:
+            $ref: '#/components/schemas/Whitelist'
+      example:
+        server-name: Minecraft-server
+        serverSpecs: MID-TIER
+        fileLocation: https://www.example.com/
+        whitelist:
+        - users:
+          - 100
+          - 200
+          - 300
+        - users:
+          - 100
+          - 200
+          - 300
+        ownerId: 100
+        serverId: 100
+        status: RUNNING
+      xml:
+        name: server
+    Whitelist:
+      type: object
+      properties:
+        users:
+          type: array
+          example:
+          - 100
+          - 200
+          - 300
+          items:
+            type: integer
+      example:
+        users:
+        - 100
+        - 200
+        - 300
+      xml:
+        name: whitelist
